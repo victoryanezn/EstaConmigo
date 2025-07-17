@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="row align-items-center mb-3">
+    <div class="col">
+      <h2>Lista de Mascotas</h2>
+    </div>
+    <div class="col-auto">
+      {% if user.is_superuser %}
+      <span class="badge bg-danger">Superadministrador</span>
+      {% else %}
+      <span class="badge bg-secondary">Moderador</span>
+      {% endif %}
+    </div>
+  </div>
+  
+  {% if not user.is_superuser %}
+  <div class="alert alert-info">
+    <i class="fas fa-info-circle me-2"></i>
+    <strong>Nota:</strong> Como moderador puedes crear y editar mascotas, pero solo los superadministradores pueden eliminarlas.
+  </div>
+  {% endif %}
+  <form id="busqueda-form" class="row g-2 mb-3" autocomplete="off">
+    <div class="col-md-3">
+      <input type="text" name="nfc_id" id="busca-nfc" class="form-control" placeholder="Buscar por ID" value="{{ nfc_id|default:'' }}">
+    </div>
+    <div class="col-md-3">
+      <input type="text" name="rut_dueno" id="busca-rut" class="form-control" placeholder="Buscar por RUT dueño" value="{{ rut_dueno|default:'' }}">
+    </div>
+    <div class="col-md-3">
+      <input type="text" name="telefono_dueno" id="busca-telefono" class="form-control" placeholder="Buscar por teléfono" value="{{ telefono_dueno|default:'' }}">
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </div>
+  </form>
+  <a href="{% url 'moderador_crear_mascota' %}" class="btn btn-primary mb-3">Crear Mascota</a>
+  <div class="table-responsive" id="tabla-mascotas">
+    {% include 'moderadores/_tabla_mascotas.html' %}
+  </div>
+
+<script>
+const form = document.getElementById('busqueda-form');
+const tabla = document.getElementById('tabla-mascotas');
+let timeout = null;
+
+function buscarAjax() {
+  const params = new URLSearchParams(new FormData(form)).toString();
+  fetch("{% url 'moderador_listar_mascotas_ajax' %}?" + params, {
+    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  })
+    .then(r => r.json())
+    .then(data => { tabla.innerHTML = data.html; });
+}
+
+form.addEventListener('input', function(e) {
+  clearTimeout(timeout);
+  timeout = setTimeout(buscarAjax, 300);
+});
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  buscarAjax();
+});
+</script>
+</div>
+{% endblock %}

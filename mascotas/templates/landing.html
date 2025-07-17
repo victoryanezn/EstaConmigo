@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstáConmigo - Tecnología NFC para Mascotas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-overlay: rgba(26, 26, 46, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--dark-overlay);
+            z-index: 1;
+        }
+
+        /* Pet silhouettes floating */
+        .pet-silhouette {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 1;
+            animation: petFloat 25s infinite linear;
+        }
+
+        .pet-silhouette:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            font-size: 3rem;
+            animation-delay: 0s;
+        }
+
+        .pet-silhouette:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            font-size: 4rem;
+            animation-delay: 8s;
+        }
+
+        .pet-silhouette:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            font-size: 2.5rem;
+            animation-delay: 16s;
+        }
+
+        .pet-silhouette:nth-child(4) {
+            top: 40%;
+            right: 40%;
+            font-size: 3.5rem;
+            animation-delay: 4s;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: slideUp 1s ease-out;
+            line-height: 1.2;
+        }
+
+        .hero .lead {
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            animation: slideUp 1s ease-out 0.3s both;
+            color: #f093fb;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.85;
+            animation: slideUp 1s ease-out 0.6s both;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            animation: slideUp 1s ease-out 0.9s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f093fb;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-buttons {
+            animation: slideUp 1s ease-out 1.2s both;
+        }
+
+        .btn-hero {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-hero {
+            background: var(--secondary-gradient);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        .btn-primary-hero:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.4);
+            color: white;
+        }
+
+        .btn-outline-hero {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline-hero:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+            z-index: 1;
+        }
+
+        .particle:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 60px; height: 60px; left: 80%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 100px; height: 100px; left: 60%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 40px; height: 40px; left: 30%; animation-delay: 6s; }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: linear-gradient(to bottom, #f8f9fa, white);
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .section-header {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-card:hover .feature-icon::before {
+            transform: rotate(45deg) translateX(100%);
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.8;
+        }
+
+        /* How it Works Section */
+        .how-it-works {
+            padding: 6rem 0;
+            background: var(--primary-gradient);
+            color: white;
+            position: relative;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .step-card h4 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .step-card p {
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+
+        /* Security Section */
+        .security {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .security-badge {
+            background: var(--success-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+
+        .security-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .security-list li {
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+
+        .security-list li i {
+            color: #28a745;
+            margin-right: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 0;
+            background: var(--primary-gradient);
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer h5 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .footer a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #667eea;
+        }
+
+        .footer .text-muted {
+            color: #adb5bd !important;
+        }
+
+        .footer hr {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer .copyright-text {
+            color: #adb5bd;
+        }
+
+        .footer .footer-description {
+            color: #adb5bd;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes petFloat {
+            0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.1; }
+            25% { transform: translateY(-50px) translateX(30px) rotate(90deg); opacity: 0.15; }
+            50% { transform: translateY(0px) translateX(60px) rotate(180deg); opacity: 0.1; }
+            75% { transform: translateY(50px) translateX(30px) rotate(270deg); opacity: 0.05; }
+            100% { transform: translateY(0px) translateX(0px) rotate(360deg); opacity: 0.1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero .lead { font-size: 1.2rem; }
+            .cta h2 { font-size: 2rem; }
+            .feature-card { padding: 2rem 1.5rem; }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(26, 26, 46, 0.9) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #667eea !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-paw me-2"></i>EstáConmigo
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Características</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">Cómo Funciona</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#security">Seguridad</a>
+                    </li>
+                    {% comment %} <li class="nav-item">
+                        <a class="nav-link" href="/accounts/login/">Acceso Moderador</a>
+                    </li> {% endcomment %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Floating pet silhouettes -->
+        <div class="pet-silhouette"><i class="fas fa-dog"></i></div>
+        <div class="pet-silhouette"><i class="fas fa-cat"></i></div>
+        <div class="pet-silhouette"><i class="fas fa-paw"></i></div>
+        <div class="pet-silhouette"><i class="fas fa-bone"></i></div>
+        
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="hero-content">
+                        <h1>🐾 EstáConmigo - Tu Mascota Siempre Protegida</h1>
+                        <p class="lead">EstáConmigo es un sistema inteligente de identificación y rastreo para mascotas, que conecta a quienes las encuentran con sus dueños de forma rápida, segura y confiable.</p>
+                        <p class="subtitle">Nuestra chapa con NFC y QR garantiza que, si tu amigo peludo se pierde, alguien que lo encuentre pueda contactarte al instante. Porque sabemos que tu mascota siempre merece volver a casa... EstáConmigo, la tranquilidad en tu bolsillo.</p>
+                        
+                        <!-- Hero Stats -->
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">Protección</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Batería Necesaria</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">∞</span>
+                                <span class="stat-label">Tranquilidad</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cta-buttons">
+                            <a href="#features" class="btn btn-hero btn-primary-hero">
+                                <i class="fas fa-heart me-2"></i>Proteger Mi Mascota
+                            </a>
+                            <a href="#how-it-works" class="btn btn-hero btn-outline-hero">
+                                <i class="fas fa-play-circle me-2"></i>Ver Cómo Funciona
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-8 mx-auto section-header">
+                    <span class="section-badge">
+                        <i class="fas fa-star me-2"></i>Características Principales
+                    </span>
+                    <h2 class="display-4 fw-bold text-dark mb-4">Tecnología Simple.<br>Amor Protegido.</h2>
+                    <p class="lead text-muted">Porque cada mascota merece volver a casa sana y salva.</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-battery-empty"></i>
+                        </div>
+                        <h3>🔋 Sin Batería</h3>
+                        <p>No necesita carga ni mantenimiento. La tecnología NFC funciona de forma pasiva, siempre lista cuando más la necesitas.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3>💧 Resistente al Agua</h3>
+                        <p>Diseñado para resistir lluvia, baños y todas las aventuras de tu mascota. Protección IP67 garantizada.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>⚡ Conexión Instantánea</h3>
+                        <p>Solo acerca cualquier smartphone para acceder al perfil de tu mascota. Sin apps, sin complicaciones, sin demoras.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>🛡️ Datos Protegidos</h3>
+                        <p>Tu información está encriptada y segura. Solo se muestra lo necesario para reunir a tu mascota contigo.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>📱 Universal</h3>
+                        <p>Compatible con iPhone, Android y cualquier smartphone moderno. La tecnología NFC es estándar mundial.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>📍 Ubicación en Tiempo Real</h3>
+                        <p>Permite que quien encuentre a tu mascota comparta su ubicación contigo al instante desde cualquier lugar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-4 fw-bold mb-4">🔧 ¿Cómo Funciona?</h2>
+                    <p class="lead opacity-75">Tres pasos simples para la máxima tranquilidad</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>📝 Registra a tu Mascota</h4>
+                        <p>Crea el perfil completo de tu mascota con información de contacto, foto adorable y datos médicos importantes como vacunación.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>🏷️ Coloca la Chapa NFC</h4>
+                        <p>Adjunta la chapa inteligente al collar de tu mascota. Es ultraligera, súper resistente y se adapta a cualquier collar existente.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>🏠 Reencuentro Instantáneo</h4>
+                        <p>Si tu mascota se pierde, quien la encuentre solo necesita acercar su teléfono para contactarte inmediatamente. ¡Así de simple!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="security">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <span class="security-badge">
+                        <i class="fas fa-lock me-2"></i>Máxima Seguridad
+                    </span>
+                    <h2 class="display-5 fw-bold text-dark mb-4">Tu Privacidad es Nuestra Prioridad</h2>
+                    <p class="text-muted mb-4">Entendemos que la información de tu mascota es sensible. Por eso hemos diseñado EstáConmigo con los más altos estándares de seguridad y privacidad.</p>
+                    
+                    <ul class="security-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Información encriptada y protegida
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Solo datos necesarios para el reencuentro
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Sin rastreo permanente de ubicación
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Control total sobre tu información
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Cumplimiento de normativas de privacidad
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt" style="font-size: 15rem; color: #667eea; opacity: 0.1;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-8 mx-auto">
+                    <h2>🚨 Cada Segundo Cuenta</h2>
+                    <p>Cuando se trata de que tu mascota vuelva a casa, la velocidad de respuesta puede hacer toda la diferencia. No esperes hasta que sea demasiado tarde.</p>
+                    <a href="#" class="btn btn-hero btn-outline-hero btn-lg">
+                        <i class="fas fa-heart me-2"></i>Protege a Tu Mascota Hoy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5><i class="fas fa-paw me-2"></i>EstáConmigo</h5>
+                    <p class="footer-description">Tecnología NFC inteligente para mantener a tu mascota segura y conectada contigo, siempre.</p>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h5>Producto</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#features">Características</a></li>
+                        <li><a href="#how-it-works">Cómo Funciona</a></li>
+                        <li><a href="#security">Seguridad</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h5>Soporte</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Centro de Ayuda</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h5>Empresa</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Sobre Nosotros</a></li>
+                        <li><a href="#">Privacidad</a></li>
+                        <li><a href="{% url 'terminos_condiciones' %}">Términos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2">
+                    <h5>Síguenos</h5>
+                    <div class="d-flex">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="copyright-text mb-0">&copy; 2025 EstáConmigo. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="copyright-text mb-0">Hecho con <i class="fas fa-heart text-danger"></i> para nuestras mascotas</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(26, 26, 46, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(26, 26, 46, 0.9)';
+            }
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'slideUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards
+        document.querySelectorAll('.feature-card, .step-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

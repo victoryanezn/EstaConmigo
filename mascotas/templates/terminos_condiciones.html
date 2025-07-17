@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos y Condiciones - EstáConmigo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: white;
+            margin: 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .content-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, var(--accent-color), #f5576c);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .contact-info {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            margin: 1rem 0;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .date-updated {
+            color: #6c757d;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .important-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="{% url 'landing' %}" class="back-button">
+        <i class="fas fa-arrow-left me-2"></i>Volver
+    </a>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <h1>
+                <i class="fas fa-file-contract me-2"></i>
+                Términos y Condiciones
+            </h1>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="content-container">
+                    <div class="date-updated">
+                        <strong>Última actualización:</strong> 16 de julio de 2025
+                    </div>
+
+                    <div class="highlight">
+                        <h5><i class="fas fa-info-circle me-2"></i>Bienvenido a EstáConmigo</h5>
+                        <p class="mb-0">Al utilizar nuestro servicio de collares NFC para mascotas, aceptas estos términos y condiciones. Te recomendamos leerlos detenidamente.</p>
+                    </div>
+
+                    <h3 class="section-title">1. Definiciones</h3>
+                    <ul>
+                        <li><strong>EstáConmigo:</strong> Plataforma tecnológica que utiliza chips NFC para ayudar en la localización de mascotas perdidas.</li>
+                        <li><strong>Usuario:</strong> Cualquier persona que utiliza nuestros servicios, ya sea como dueño de mascota o como persona que encuentra una mascota.</li>
+                        <li><strong>Collar NFC:</strong> Dispositivo con tecnología Near Field Communication que contiene información de contacto de la mascota.</li>
+                        <li><strong>Plataforma:</strong> Sitio web y servicios asociados de EstáConmigo.</li>
+                    </ul>
+
+                    <h3 class="section-title">2. Aceptación de los Términos</h3>
+                    <p>Al acceder y utilizar Est�Conmigo, confirmas que:</p>
+                    <ul>
+                        <li>Eres mayor de 18 años o tienes autorización de un tutor legal</li>
+                        <li>Tienes capacidad legal para aceptar estos términos</li>
+                        <li>Utilizarás el servicio de manera responsable y legal</li>
+                        <li>Proporcionarás información veraz y actualizada</li>
+                    </ul>
+
+                    <h3 class="section-title">3. Descripción del Servicio</h3>
+                    <p>Est�Conmigo ofrece:</p>
+                    <ul>
+                        <li><strong>Perfiles de mascotas:</strong> Creación y gestión de perfiles con información de contacto</li>
+                        <li><strong>Tecnología NFC:</strong> Collares con chips que facilitan la identificación</li>
+                        <li><strong>Sistema de ubicación:</strong> Herramientas para compartir la ubicación donde se encontró la mascota</li>
+                        <li><strong>Comunicación directa:</strong> Enlaces a WhatsApp y llamadas telefónicas</li>
+                        <li><strong>Notificaciones por email:</strong> Alertas automáticas cuando se reporta la ubicación de tu mascota</li>
+                    </ul>
+
+                    <h3 class="section-title">4. Responsabilidades del Usuario</h3>
+                    <div class="important-note">
+                        <strong><i class="fas fa-exclamation-triangle me-2"></i>Importante:</strong> 
+                        El usuario se compromete a mantener actualizada la información de contacto y utilizar el servicio de forma ética.
+                    </div>
+                    <p>Como usuario de Est�Conmigo, te comprometes a:</p>
+                    <ul>
+                        <li>Proporcionar información de contacto veraz y actualizada</li>
+                        <li>Mantener tu perfil de mascota al día</li>
+                        <li>Utilizar el sistema solo para localizar mascotas legítimamente perdidas</li>
+                        <li>No abusar del sistema de comunicación</li>
+                        <li>Respetar la privacidad de otros usuarios</li>
+                        <li>No utilizar el servicio para actividades fraudulentas o ilegales</li>
+                    </ul>
+
+                    <h3 class="section-title">5. Privacidad y Protección de Datos</h3>
+                    <p>En Est�Conmigo valoramos tu privacidad:</p>
+                    <ul>
+                        <li><strong>Información recopilada:</strong> Nombre de mascota, información de contacto, ubicaciones reportadas</li>
+                        <li><strong>Uso de datos:</strong> Únicamente para facilitar el reencuentro con mascotas perdidas</li>
+                        <li><strong>Compartir información:</strong> Solo se comparte la información necesaria para contactar al dueño</li>
+                        <li><strong>Seguridad:</strong> Implementamos medidas de seguridad para proteger tus datos</li>
+                        <li><strong>Derechos:</strong> Puedes solicitar la eliminación de tus datos en cualquier momento</li>
+                    </ul>
+
+                    <h3 class="section-title">6. Limitaciones del Servicio</h3>
+                    <div class="important-note">
+                        <strong><i class="fas fa-shield-alt me-2"></i>Limitación de Responsabilidad:</strong> 
+                        Est�Conmigo es una herramienta de asistencia. No garantizamos el reencuentro con mascotas perdidas.
+                    </div>
+                    <p>Es importante entender que:</p>
+                    <ul>
+                        <li>Est�Conmigo es una herramienta de asistencia, no un servicio de garantía</li>
+                        <li>No podemos garantizar que una mascota perdida será encontrada</li>
+                        <li>La efectividad depende de que personas encuentren y escaneen el collar NFC</li>
+                        <li>Recomendamos usar Est�Conmigo junto con otros métodos de búsqueda</li>
+                        <li>No somos responsables por la pérdida o daño de mascotas</li>
+                    </ul>
+
+                    <h3 class="section-title">7. Uso Responsable</h3>
+                    <p>Para mantener un servicio seguro y efectivo, está prohibido:</p>
+                    <ul>
+                        <li>Usar información falsa o engañosa</li>
+                        <li>Acosar o amenazar a otros usuarios</li>
+                        <li>Intentar acceder a cuentas de terceros</li>
+                        <li>Utilizar el servicio para actividades comerciales no autorizadas</li>
+                        <li>Sobrecargar o interrumpir el funcionamiento de la plataforma</li>
+                        <li>Intentar apropiarse de mascotas ajenas</li>
+                    </ul>
+
+                    <h3 class="section-title">8. Modificaciones del Servicio</h3>
+                    <p>Est�Conmigo se reserva el derecho de:</p>
+                    <ul>
+                        <li>Modificar o discontinuar características del servicio</li>
+                        <li>Actualizar estos términos y condiciones</li>
+                        <li>Suspender cuentas que violen estos términos</li>
+                        <li>Mejorar la plataforma con nuevas funcionalidades</li>
+                    </ul>
+
+                    <h3 class="section-title">9. Propiedad Intelectual</h3>
+                    <p>Todo el contenido de Est�Conmigo, incluyendo:</p>
+                    <ul>
+                        <li>Diseño y código de la plataforma</li>
+                        <li>Logotipos y marcas</li>
+                        <li>Textos y contenido</li>
+                        <li>Funcionalidades innovadoras</li>
+                    </ul>
+                    <p>Está protegido por derechos de autor y propiedad intelectual.</p>
+
+                    <h3 class="section-title">10. Resolución de Disputas</h3>
+                    <p>En caso de controversias:</p>
+                    <ul>
+                        <li>Primero intentaremos resolver el problema de manera amistosa</li>
+                        <li>Las disputas se resolverán bajo la legislación chilena</li>
+                        <li>La jurisdicción competente será la de Santiago, Chile</li>
+                    </ul>
+
+                    <h3 class="section-title">11. Contacto y Soporte</h3>
+                    <div class="contact-info">
+                        <h5><i class="fas fa-envelope me-2"></i>¿Necesitas ayuda?</h5>
+                        <p><strong>Email:</strong> victor.faviano2005@gmail.com</p>
+                        <p><strong>Respuesta típica:</strong> 24-48 horas</p>
+                        <p><strong>Consultas frecuentes:</strong> Información técnica, problemas con collares NFC, actualización de datos</p>
+                    </div>
+
+                    <h3 class="section-title">12. Términos Generales</h3>
+                    <ul>
+                        <li><strong>Vigencia:</strong> Estos términos están vigentes mientras uses Est�Conmigo</li>
+                        <li><strong>Separabilidad:</strong> Si alguna cláusula es inválida, el resto permanece en vigor</li>
+                        <li><strong>Acuerdo completo:</strong> Estos términos constituyen el acuerdo completo entre las partes</li>
+                        <li><strong>Modificaciones:</strong> Solo pueden modificarse por escrito por Est�Conmigo</li>
+                    </ul>
+
+                    <div class="highlight">
+                        <h5><i class="fas fa-heart me-2"></i>Nuestro Compromiso</h5>
+                        <p class="mb-0">
+                            En Est�Conmigo estamos comprometidos con reunir a las familias con sus mascotas perdidas. 
+                            Trabajamos constantemente para mejorar nuestro servicio y hacer que la tecnología sea 
+                            una herramienta poderosa para el amor incondicional entre humanos y animales.
+                        </p>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted">
+                            <i class="fas fa-paw me-2"></i>
+                            <strong>Est�Conmigo</strong> - Tecnología que nos mantiene unidos
+                        </p>
+                        <a href="{% url 'landing' %}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

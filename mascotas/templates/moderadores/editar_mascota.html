@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Editar Mascota</h2>
+  <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm" action="?{% if params %}{{ params }}{% endif %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="mt-3">
+      <button type="submit" class="btn btn-success">Guardar cambios</button>
+      <a href="{% url 'moderador_listar_mascotas' %}{% if params %}?{{ params }}{% endif %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

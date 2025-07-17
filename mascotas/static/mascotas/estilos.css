@@ -1,0 +1,81 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.pet-photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #007bff;
+    background-color: #e9ecef;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Estilos para validación de RUT */
+.form-control.is-valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.4.4 1.5-1.5L7 2.8l-.4-.4L3.7 5.3z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m6 3v3'/%3e%3cpath d='m6 9h0'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-valid:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.form-control.is-invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Mensaje de ayuda para RUT */
+.rut-help {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+.rut-help.valid {
+    color: #28a745;
+}
+
+.rut-help.invalid {
+    color: #dc3545;
+}
+
+/* Estilos específicos para validación de email */
+input[type="email"].is-valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.4.4 1.5-1.5L7 2.8l-.4-.4L3.7 5.3z'/%3e%3c/svg%3e");
+}
+
+input[type="email"].is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m6 3v3'/%3e%3cpath d='m6 9h0'/%3e%3c/svg%3e");
+}
+
+/* Feedback visual específico para email */
+.email-feedback {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.email-feedback.valid {
+    color: #28a745;
+}
+
+.email-feedback.invalid {
+    color: #dc3545;
+}

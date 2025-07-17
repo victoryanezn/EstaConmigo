@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <div class="row align-items-center mb-3">
+    <div class="col">
+      <h2>Eliminar Mascota</h2>
+    </div>
+    <div class="col-auto">
+      <span class="badge bg-danger">Superadministrador</span>
+    </div>
+  </div>
+  
+  <div class="alert alert-danger">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    <strong>¡Acción Irreversible!</strong><br>
+    ¿Estás seguro de que deseas eliminar la mascota <strong>{{ mascota.nombre }}</strong>?<br>
+    <small>Esta acción no se puede deshacer y solo está disponible para superadministradores.</small>
+  </div>
+  
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="mb-0">Datos de la mascota a eliminar</h5>
+    </div>
+    <div class="card-body">
+      <p><strong>ID NFC:</strong> {{ mascota.nfc_id }}</p>
+      <p><strong>Nombre:</strong> {{ mascota.nombre }}</p>
+      <p><strong>Dueño:</strong> {{ mascota.nombre_dueno }}</p>
+      <p><strong>RUT:</strong> {{ mascota.rut_formateado }}</p>
+      <p><strong>Teléfono:</strong> {{ mascota.telefono_formateado }}</p>
+    </div>
+  </div>
+  
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">
+      <i class="fas fa-trash me-2"></i>
+      Confirmar Eliminación
+    </button>
+    <a href="{% url 'moderador_listar_mascotas' %}{% if params %}?{{ params }}{% endif %}" class="btn btn-secondary">
+      <i class="fas fa-arrow-left me-2"></i>
+      Cancelar
+    </a>
+  </form>
+</div>
+{% endblock %}

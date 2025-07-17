@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Panel EstáConmigo{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'mascotas/estilos.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'moderador_listar_mascotas' %}">Panel EstáConmigo</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'moderador_listar_mascotas' %}">Mascotas</a>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link text-white fw-bold">{{ user.username }}</span>
+        </li>
+        <li class="nav-item">
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="nav-link btn btn-link text-white" style="text-decoration:none;" type="submit">Cerrar sesión</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endif %}
+<main>
+{% block content %}{% endblock %}
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Función para formatear RUT en tiempo real
+function formatearRUT(input) {
+    // Obtener el valor y limpiar caracteres no válidos
+    let rut = input.value.replace(/[^\dkK]/g, '').toUpperCase();
+    
+    // Limitar a 9 caracteres máximo
+    if (rut.length > 9) {
+        rut = rut.substring(0, 9);
+    }
+    
+    // Aplicar formato si tiene al menos 2 caracteres
+    if (rut.length >= 2) {
+        // Separar número del dígito verificador
+        let numero = rut.slice(0, -1);
+        let dv = rut.slice(-1);
+        
+        // Agregar puntos cada 3 dígitos desde la derecha
+        let numeroFormateado = '';
+        for (let i = numero.length - 1, j = 0; i >= 0; i--, j++) {
+            if (j > 0 && j % 3 === 0) {
+                numeroFormateado = '.' + numeroFormateado;
+            }
+            numeroFormateado = numero[i] + numeroFormateado;
+        }
+        
+        // Establecer el valor formateado
+        input.value = numeroFormateado + '-' + dv;
+    } else {
+        input.value = rut;
+    }
+}
+
+// Función para validar RUT en tiempo real
+function validarRUT(rut) {
+    // Limpiar el RUT
+    rut = rut.replace(/[^\dkK]/g, '').toUpperCase();
+    
+    if (rut.length < 8 || rut.length > 9) {
+        return false;
+    }
+    
+    // Separar número del dígito verificador
+    let numero = rut.slice(0, -1);
+    let dv = rut.slice(-1);
+    
+    // Calcular dígito verificador
+    let suma = 0;
+    let multiplicador = 2;
+    
+    for (let i = numero.length - 1; i >= 0; i--) {
+        suma += parseInt(numero[i]) * multiplicador;
+        multiplicador++;
+        if (multiplicador === 8) {
+            multiplicador = 2;
+        }
+    }
+    
+    let resto = suma % 11;
+    let dvCalculado = 11 - resto;
+    
+    if (dvCalculado === 11) {
+        dvCalculado = '0';
+    } else if (dvCalculado === 10) {
+        dvCalculado = 'K';
+    } else {
+        dvCalculado = dvCalculado.toString();
+    }
+    
+    return dv === dvCalculado;
+}
+
+// Función para validar email en tiempo real
+function validarEmail(input) {
+    const email = input.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    // Limpiar clases previas
+    input.classList.remove('is-valid', 'is-invalid');
+    
+    if (email === '') {
+        return; // No validar email vacío
+    }
+    
+    // Validar formato básico
+    if (!emailRegex.test(email)) {
+        input.classList.add('is-invalid');
+        return;
+    }
+    
+    // Validar longitud del nombre de usuario
+    const nombreUsuario = email.split('@')[0];
+    if (nombreUsuario.length < 2) {
+        input.classList.add('is-invalid');
+        return;
+    }
+    
+    // Email válido
+    input.classList.add('is-valid');
+}
+
+// Agregar validación visual al campo RUT
+document.addEventListener('DOMContentLoaded', function() {
+    const rutInputs = document.querySelectorAll('input[name="rut_dueno"]');
+    
+    rutInputs.forEach(function(input) {
+        input.addEventListener('blur', function() {
+            const rutLimpio = this.value.replace(/[^\dkK]/g, '');
+            if (rutLimpio.length >= 8) {
+                if (validarRUT(rutLimpio)) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                } else {
+                    this.classList.remove('is-valid');
+                    this.classList.add('is-invalid');
+                }
+            } else {
+                this.classList.remove('is-valid', 'is-invalid');
+            }
+        });
+    });
+    
+    // Agregar validación visual al campo Email
+    const emailInputs = document.querySelectorAll('input[name="email_dueno"]');
+    
+    emailInputs.forEach(function(input) {
+        input.addEventListener('blur', function() {
+            validarEmail(this);
+        });
+        
+        input.addEventListener('input', function() {
+            // Validación en tiempo real mientras escribe
+            const email = this.value.trim();
+            if (email.length > 5) { // Solo validar después de cierta longitud
+                validarEmail(this);
+            } else {
+                this.classList.remove('is-valid', 'is-invalid');
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

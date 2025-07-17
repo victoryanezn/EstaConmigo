@@ -1,0 +1,15 @@
+# Entornos virtuales
+.venv/
+venv/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+
+# Archivos de base de datos y migraciones temporales
+*.sqlite3
+*.log
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
